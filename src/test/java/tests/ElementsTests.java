@@ -57,6 +57,7 @@ public class ElementsTests {
         Assert.assertTrue(addButton.isDisplayed());
         addButton.click();
         WebElement regisForm = driver.findElement(By.cssSelector("form#userForm"));
+        wait.until(ExpectedConditions.visibilityOf(regisForm));
         Assert.assertTrue(regisForm.isDisplayed());
         WebElement firstNameInput = driver.findElement(By.cssSelector("input#firstName"));
         Assert.assertTrue(firstNameInput.isDisplayed());
@@ -84,12 +85,17 @@ public class ElementsTests {
         WebElement editButton = driver.findElement(By.cssSelector("span#edit-record-4"));
         Assert.assertTrue(editButton.isDisplayed());
         editButton.click();
-        Assert.assertTrue(regisForm.isDisplayed());
-        firstNameInput.clear();
-        firstNameInput.sendKeys("Umut");
-        submitButton.click();
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("input#firstName")));
+        //Hocam web elementleri bu şekilde method içinde tanımlayınca test dırasında tekrar aynı elementi görüntülediğinde tekrar tanımlamak zorunda kaldım.
+        //Yoksa göremiyordu. O yüzden firstNameInput2 ve submitButton2 tekrar tanımladım.
+        WebElement firstNameInput2 = driver.findElement(By.cssSelector("input#firstName"));
+        firstNameInput2.clear();
+        firstNameInput2.sendKeys("Umut");
+        WebElement submitButton2 = driver.findElement(By.cssSelector("button#submit"));
+        submitButton2.click();
         //Hocam updatedName elementini ancak xpath ile alabildim:( css Selector ile text almayı başaramadım. contains çalışmıyor
-        WebElement updatedName = driver.findElement(By.xpath("//div[text()='umut'']"));
+        WebElement updatedName = driver.findElement(By.xpath("//div[text()='Umut']"));
+        wait.until(ExpectedConditions.visibilityOf(updatedName));
         Assert.assertTrue(updatedName.isDisplayed());
     }
 
